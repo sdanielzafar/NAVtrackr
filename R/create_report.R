@@ -17,14 +17,14 @@ report_create <- function(user, pass, period_end_date = get_Sat()) {
   options(warn = -1)
 
   # read in the user keys
-  user_keys <- read.csv("inst/extdata/user_keys.csv",
-                        stringsAsFactors = F) %>%
-    .[, .$username == "dzafar"]
+  user_keys <- system.file("extdata", "user_keys.csv", package = "NAVtrackr") %>%
+    read.csv(stringsAsFactors = F) %>%
+    .[, .$username == user]
 
   if (nchar(user_keys$notify) != 30) user_keys$notify <- NULL
 
   if (nrow(user_keys) == 0) {
-    stop("Confirm that you have your toggl and notify keys in data/user_keys.csv")
+    stop("Confirm that you have added your toggl and notify tokens")
   }
 
   # A - Logging in and creating the report ---------------------------------------
