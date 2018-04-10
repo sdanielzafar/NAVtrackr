@@ -7,17 +7,29 @@
 report_create(user, pass, period_end_date = get_Sat())
 }
 \arguments{
+\item{user}{the user's Navigant username}
+
 \item{pass}{the user's Navigant password}
 
 \item{period_end_date}{the period end date to make the timesheet for, defaults
 for the previous Saturday but can run the next saturday easily by setting
 this value to `get_Sat(prev = F)`}
-
-\item{un}{the user's Navigant username}
 }
 \value{
 the resultant html session, can be parsed for errors
 }
 \description{
-Create and save a report from Toggl
+This high-level function logs onto InsideNCI, get your toggl report
+for the indicated period end date and formats it (`get_toggl_entries()`), and
+inserts it into a timesheet. Lastly it saves the timesheet so that you can open
+it up and do a quick QC or add comments before it is submitted.
+}
+\examples{
+
+# for the last timesheet
+report_create("dzafar", "password")
+
+# for the upcoming timesheet
+report_create("dzafar", "password", period_end_date = get_Sat(prev = F))
+
 }
