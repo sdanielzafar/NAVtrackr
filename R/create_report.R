@@ -30,16 +30,11 @@ report_create <- function(user, pass, period_end_date = get_Sat()) {
 
   options(warn = -1)
 
-  # read in the user keys
-  user_keys <- system.file("extdata", "user_keys.csv", package = "NAVtrackr") %>%
-    read.csv(stringsAsFactors = F) %>%
-    .[, .$username == user]
-
-  if (nchar(user_keys$notify) != 30) user_keys$notify <- NULL
-
-  if (nrow(user_keys) == 0) {
-    stop("Confirm that you have added your toggl and notify tokens")
-  }
+  # Verifying Toggl and Pushover keys
+  verify_keys()
+  toggl <- Sys.getenv("TOGGL_TOKEN")
+  notify <- Sys.getenv("PUSHOVER_KEY")
+  if (nchar(notify) != 30) notify <- NULL
 
   # A - Logging in and creating the report ---------------------------------------
   session <- NAVlogin(user, pass)
@@ -61,13 +56,17 @@ report_create <- function(user, pass, period_end_date = get_Sat()) {
                            submit = '#ICSearch')
 
   # create blank report with location
-  add_loc_form <- session %>%
-    html_node("form[name=win0]") %>%
-    html_form %>%
-    set_values(
-      ICAction = "EX_ICLIENT_WRK_OK_PB",
-      EX_TIME_HDR_LOCALITY = "CO-BOULDER"
-    )
+  tryCatch({
+    add_loc_form <- session %>%
+      html_node("form[name=win0]") %>%
+      html_form %>%
+      set_values(
+        ICAction = "EX_ICLIENT_WRK_OK_PB",
+        EX_TIME_HDR_LOCALITY = "CO-BOULDER"
+      )
+  }, error = function(e) {
+    stop("Time report for ", period_end_date, " already exists")
+    })
 
   session %<>% submit_form(form = add_loc_form,
                            submit = 'EX_TIME_HDR_LOCALITY')
@@ -75,11 +74,11 @@ report_create <- function(user, pass, period_end_date = get_Sat()) {
   # B - Saving the report ------------------------------------------------------
 
   # use method to get toggl entries
-  entries <- get_toggl_entries(period_end_date, user_keys$toggl)
+  entries <- get_toggl_entries(period_end_date, toggl)
 
   # saving the report with the working bill codes
   session %<>%
-    ts_fill_save(entries, user_keys$notify)
+    ts_fill_save(entries, notify)
 
 }
 

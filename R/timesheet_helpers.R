@@ -86,6 +86,7 @@ ts_fill_save <- function(session, entries, notify = NULL) {
         user = notify,
         paste0("ERROR in timesheet creation for ", format(period_end_date, "%m/%d/%Y"), ": ", error)
       )
+      warning("Timesheet not saved due to error", error)
     }
 
     stop("Timesheet error: ", error)

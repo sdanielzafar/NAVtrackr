@@ -95,7 +95,8 @@ get_toggl_day <- function(date, toggl_token, min = 5) {
 #' @return a data frame with billed hours.
 #'
 #' @details Make sure to follow the Toggl project format guidelines or this
-#' function will not work. The structure is as below:
+#' function will not work and (hopefully) produce an error.
+#' The required structure is as below:
 #'
 #' For single bill codes:
 #' "Client Task 123456:001"
@@ -141,26 +142,49 @@ get_toggl_entries <- function(date = Sys.Date(), toggl_token) {
 
   # now we need to treat the entries with multiple bill codes
   # sets a default of 50/50, 33/33/33, or 25/25/25/25 for 2, 3, and 4 codes.
-  if (nrow(filter(entries, grepl(":", bill_code))) > 0) {
-    all_bc <- entries %>%
-      filter(grepl(":", bill_code)) %>%
-      mutate(num = str_split(bill_code, ":") %>% length %>% list,
-             ratio = case_when(
-               is.na(ratio) ~ map_chr(num, ~ paste0(rep(1/.*100, .), collapse = "/")),
-               TRUE         ~ ratio
-             ),
-             codes = str_split(bill_code, ":") %>%
-               map2(str_split(tasks, ":"), ~paste0(.x, ":", .y)),
-             ratio = str_split(ratio, "/") %>% map(as.numeric),
-             sum = map_dbl(ratio, sum),
-             frac = map2(ratio, sum, `/`),
-             hours = map2(frac, hours, `*`)) %>%
-      unnest(codes, hours) %>%
-      select(Date, codes, hours) %>%
-      tidyr::separate(codes, into = c("bill_code", "task"), sep = ":") %>%
-      # bind with the above and arrange
-      bind_rows(single_bc)
+  tryCatch({
+    if (nrow(filter(entries, grepl(":", bill_code))) > 0) {
+      all_bc <- entries %>%
+        filter(grepl(":", bill_code)) %>%
+        mutate(num = str_split(bill_code, ":") %>% length %>% list,
+               ratio = case_when(
+                 is.na(ratio) ~ map_chr(num, ~ paste0(rep(1/.*100, .), collapse = "/")),
+                 TRUE         ~ ratio
+               ),
+               codes = str_split(bill_code, ":") %>%
+                 map2(str_split(tasks, ":"), ~paste0(.x, ":", .y)),
+               ratio = str_split(ratio, "/") %>% map(as.numeric),
+               sum = map_dbl(ratio, sum),
+               frac = map2(ratio, sum, `/`),
+               hours = map2(frac, hours, `*`)) %>%
+        unnest(codes, hours) %>%
+        select(Date, codes, hours) %>%
+        tidyr::separate(codes, into = c("bill_code", "task"), sep = ":") %>%
+        # bind with the above and arrange
+        bind_rows(single_bc)
+      } else all_bc <- single_bc
+  }, error = function(e) message("Multiple bill code not formatted correctly"))
+
+  if (exists("all_bc")) {
+    # checking parsing errors
+    parse_error <- list()
+    parse_error[["No bill or task code parsed"]] <- all_bc %>%
+      filter(bill_code == "" & task == "")
+    parse_error[["No bill code parsed"]] <- all_bc %>%
+      filter(bill_code == "")
+    parse_error[["No task code parsed"]] <- all_bc %>%
+      filter(task == "")
+
+    err <- parse_error %>%
+      keep(~ nrow(.) > 0)
+
+    err %>%
+      walk2(names(.), function(.x, .y) {
+        message(.y, " on date(s): ", paste(unique(.x$Date), collapse = ", "))
+      })
   }
+
+  if (length(err) > 0 | !exists("all_bc")) stop("Toggl project parser failure")
 
   all_bc %>%
     mutate(hours = round(hours, 2)) %>%

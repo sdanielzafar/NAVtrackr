@@ -114,4 +114,10 @@ add_submit <- function(form) {
 
 }
 
-
+verify_keys <- function() {
+  toggl <- Sys.getenv("TOGGL_TOKEN")
+  notify <- Sys.getenv("PUSHOVER_KEY")
+  if (toggl == "" & notify == "") stop("TOGGL_TOKEN and PUSHOVER_KEY not set in .Renviron file")
+  if (toggl == "") stop("No TOGGL_TOKEN set in .Renviron file")
+  if (notify == "") message("No PUSHOVER_KEY set in .Renviron file, not sending pushes")
+}
