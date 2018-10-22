@@ -146,7 +146,7 @@ get_toggl_entries <- function(date = Sys.Date(), toggl_token) {
     if (nrow(filter(entries, grepl(":", bill_code))) > 0) {
       all_bc <- entries %>%
         filter(grepl(":", bill_code)) %>%
-        mutate(num = str_split(bill_code, ":") %>% length %>% list,
+        mutate(num = str_split(bill_code, ":") %>% map(length),
                ratio = case_when(
                  is.na(ratio) ~ map_chr(num, ~ paste0(rep(1/.*100, .), collapse = "/")),
                  TRUE         ~ ratio
