@@ -1,7 +1,7 @@
 Package: NAVtrackr
 Type: Package
 Title: Manages Navigant tracking, like timesheets and utilization
-Version: 0.1.0
+Version: 0.2.0
 Author: S Daniel Zafar
 Maintainer: S Daniel Zafar <daniel.zafar@navigant.com>
 Description: Interfaces with InsideNCI and Toggl to save time
