@@ -20,10 +20,15 @@
 #' @examples
 #'
 #' # for the last timesheet
-#' report_create("dzafar", "password")
+#' report_create() # NAVtrackr will guess your username based on the session.
+#' # or
+#' report_create("dzafar")
 #'
 #' # for the upcoming timesheet
-#' report_create("dzafar", "password", period_end_date = get_Sat(prev = F))
+#' report_create(period_end_date = get_Sat(prev = F))
+#'
+#' # for folks outside of the Boulder office, locality should be specified
+#' report_create(locality = "CA-SF") # for SF office
 #'
 #' @export
 report_create <- function(user = Sys.info()[["user"]], period_end_date = get_Sat(), locality = "CO-BOULDER", round = 5) {
