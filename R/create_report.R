@@ -10,6 +10,7 @@
 #' for the previous Saturday but can run the next saturday easily by setting
 #' this value to `get_Sat(prev = F)`
 #' @param locality the NCI locality, e.g. CO-BOULDER, CA-SF, or IL-C
+#' @param round an integer, the number of minutes to round toggl time entries to. Default 5 minutes.
 #'
 #' @return the resultant html session, can be parsed for errors
 #' @import rvest
@@ -25,7 +26,7 @@
 #' report_create("dzafar", "password", period_end_date = get_Sat(prev = F))
 #'
 #' @export
-report_create <- function(user = Sys.info()[["user"]], period_end_date = get_Sat(), locality = "CO-BOULDER") {
+report_create <- function(user = Sys.info()[["user"]], period_end_date = get_Sat(), locality = "CO-BOULDER", round = 5) {
   # this should run Sunday at 8:00 AM CT for the previous week
 
   options(warn = -1)
@@ -74,7 +75,7 @@ report_create <- function(user = Sys.info()[["user"]], period_end_date = get_Sat
   # B - Saving the report ------------------------------------------------------
 
   # use method to get toggl entries
-  entries <- get_toggl_entries(period_end_date, toggl)
+  entries <- get_toggl_entries(period_end_date, toggl, round)
 
   # saving the report with the working bill codes
   session %<>%

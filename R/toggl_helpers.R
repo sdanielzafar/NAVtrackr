@@ -117,14 +117,14 @@ get_toggl_day <- function(date, toggl_token, min = 5) {
 #' @import purrr
 #' @import stringr
 #' @export
-get_toggl_entries <- function(date = Sys.Date(), toggl_token) {
+get_toggl_entries <- function(date = Sys.Date(), toggl_token, round = 5) {
 
   # Get days on current time period
   days <- seq(get_Sun(date), date, by = "day")
 
   # get times from toggl for the days
   entries <- days %>%
-    map(get_toggl_day, toggl_token) %>%
+    map(get_toggl_day, toggl_token, min = round) %>%
     set_names(days) %>%
     bind_rows(.id = "Date")
 
