@@ -4,12 +4,10 @@
 \alias{NAVlogin}
 \title{Login to insideNCI}
 \usage{
-NAVlogin(un, pass)
+NAVlogin(un)
 }
 \arguments{
 \item{un}{the user's Navigant username}
-
-\item{pass}{the user's Navigant password}
 }
 \value{
 an rvest html session logged into insidenNCI

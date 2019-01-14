@@ -2,14 +2,19 @@
 #' Login to insideNCI
 #'
 #' @param un the user's Navigant username
-#' @param pass the user's Navigant password
 #'
 #' @return an rvest html session logged into insidenNCI
 #'
 #' @import magrittr
 #' @import rvest
+#' @importFrom rstudioapi showPrompt
 #' @export
-NAVlogin <- function(un, pass) {
+NAVlogin <- function(un) {
+
+  pass <- rstudioapi::showPrompt(
+    "Authenication",
+    paste0("Enter Navigant password for user '", un, "'"),
+    default = "")
 
   url <- "https://www.insidenci.com/psp/paprd/?cmd=login"
   session <- html_session(url)

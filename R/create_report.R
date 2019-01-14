@@ -6,10 +6,10 @@
 #' it up and do a quick QC or add comments before it is submitted.
 #'
 #' @param user the user's Navigant username
-#' @param pass the user's Navigant password
 #' @param period_end_date the period end date to make the timesheet for, defaults
 #' for the previous Saturday but can run the next saturday easily by setting
 #' this value to `get_Sat(prev = F)`
+#' @param locality the NCI locality, e.g. CO-BOULDER, CA-SF, or IL-C
 #'
 #' @return the resultant html session, can be parsed for errors
 #' @import rvest
@@ -25,7 +25,7 @@
 #' report_create("dzafar", "password", period_end_date = get_Sat(prev = F))
 #'
 #' @export
-report_create <- function(user, pass, period_end_date = get_Sat()) {
+report_create <- function(user = Sys.info()[["user"]], period_end_date = get_Sat(), locality = "CO-BOULDER") {
   # this should run Sunday at 8:00 AM CT for the previous week
 
   options(warn = -1)
@@ -37,7 +37,7 @@ report_create <- function(user, pass, period_end_date = get_Sat()) {
   if (nchar(notify) != 30) notify <- NULL
 
   # A - Logging in and creating the report ---------------------------------------
-  session <- NAVlogin(user, pass)
+  session <- NAVlogin(user)
 
   url <- "https://fs.insidenci.com/psp/fsprd/EMPLOYEE/ERP/c/ADMINISTER_EXPENSE_FUNCTIONS.TE_TIME_ENTRY.GBL"
 
@@ -62,7 +62,7 @@ report_create <- function(user, pass, period_end_date = get_Sat()) {
       html_form %>%
       set_values(
         ICAction = "EX_ICLIENT_WRK_OK_PB",
-        EX_TIME_HDR_LOCALITY = "CO-BOULDER"
+        EX_TIME_HDR_LOCALITY = locality
       )
   }, error = function(e) {
     stop("Time report for ", period_end_date, " already exists")
