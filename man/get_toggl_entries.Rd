@@ -4,7 +4,7 @@
 \alias{get_toggl_entries}
 \title{Get weekly Toggl entries since date}
 \usage{
-get_toggl_entries(date = Sys.Date(), toggl_token)
+get_toggl_entries(date = Sys.Date(), toggl_token, round = 5)
 }
 \arguments{
 \item{date}{the date to get the Toggl entries from. Should be class `Date`.}

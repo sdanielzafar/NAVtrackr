@@ -5,7 +5,7 @@
 \title{Create and save a report from Toggl}
 \usage{
 report_create(user = Sys.info()[["user"]], period_end_date = get_Sat(),
-  locality = "CO-BOULDER")
+  locality = "CO-BOULDER", round = 5)
 }
 \arguments{
 \item{user}{the user's Navigant username}
@@ -15,6 +15,8 @@ for the previous Saturday but can run the next saturday easily by setting
 this value to `get_Sat(prev = F)`}
 
 \item{locality}{the NCI locality, e.g. CO-BOULDER, CA-SF, or IL-C}
+
+\item{round}{an integer, the number of minutes to round toggl time entries to. Default 5 minutes.}
 }
 \value{
 the resultant html session, can be parsed for errors
@@ -28,9 +30,14 @@ it up and do a quick QC or add comments before it is submitted.
 \examples{
 
 # for the last timesheet
-report_create("dzafar", "password")
+report_create() # NAVtrackr will guess your username based on the session.
+# or
+report_create("dzafar")
 
 # for the upcoming timesheet
-report_create("dzafar", "password", period_end_date = get_Sat(prev = F))
+report_create(period_end_date = get_Sat(prev = F))
+
+# for folks outside of the Boulder office, locality should be specified
+report_create(locality = "CA-SF") # for SF office
 
 }

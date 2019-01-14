@@ -8,7 +8,7 @@ Description: Interfaces with InsideNCI and Toggl to save time
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Imports: 
     dplyr (>= 0.7.3),
     tidyr (>= 0.7.2),
