@@ -21,7 +21,8 @@ that your Toggl projects follow the Toggl project guidelines (see below)
 }
 \details{
 Make sure to follow the Toggl project format guidelines or this
-function will not work. The structure is as below:
+function will not work and (hopefully) produce an error.
+The required structure is as below:
 
 For single bill codes:
 "Client Task 123456:001"

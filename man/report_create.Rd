@@ -4,16 +4,17 @@
 \alias{report_create}
 \title{Create and save a report from Toggl}
 \usage{
-report_create(user, pass, period_end_date = get_Sat())
+report_create(user = Sys.info()[["user"]], period_end_date = get_Sat(),
+  locality = "CO-BOULDER")
 }
 \arguments{
 \item{user}{the user's Navigant username}
 
-\item{pass}{the user's Navigant password}
-
 \item{period_end_date}{the period end date to make the timesheet for, defaults
 for the previous Saturday but can run the next saturday easily by setting
 this value to `get_Sat(prev = F)`}
+
+\item{locality}{the NCI locality, e.g. CO-BOULDER, CA-SF, or IL-C}
 }
 \value{
 the resultant html session, can be parsed for errors
