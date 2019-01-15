@@ -54,18 +54,18 @@ Specified ratios must be integers, but do not need to add up to 100. Can be 1/3 
 
 Here are bad bill codes:
 
-    123456 task 001 ComEd (wrong structure)
-    TEP split between 365158:567 and 379342:321 (' and ' instead of '&')
-    TEP savings 365158:567 & 379342:321 (spaces next to the '&')
-    Unisource PM 213283:789&213283:732&213283:721 0.3/0.3/0.3 (ratio is not an integer)
+    123456 task 001 Client X (wrong structure)
+    Client X split between 365158:567 and 379342:321 (' and ' instead of '&')
+    Client X savings 365158:567 & 379342:321 (spaces next to the '&')
+    Client X PM 213283:789&213283:732&213283:721 0.3/0.3/0.3 (ratio is not an integer)
 
 Here are good bill codes:
 
-    ComEd 123456:001
-    ComEd PM 123456:001:002:003:004
-    TEP split between 365158:567&379342:321
-    TEP savings 365158:567&379342:321
-    Unisource PM 213283:789&213283:732&213283:721 33/33/33
+    Client X 123456:001
+    Client X PM 123456:001:002:003:004
+    Client X split between 365158:567&379342:321
+    Client X savings 365158:567&379342:321
+    Client X PM 213283:789&213283:732&213283:721 33/33/33
 
 Now you are ready to run the scripts! 
 
