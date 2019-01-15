@@ -5,11 +5,17 @@ A tool to move time entries from Toggl to PeopleSoft for Navigant Consulting
 
 1. Get your toggl token at the bottom of this page (https://toggl.com/app/profile)
 2. Decide if you want to use NotifyR (helpful for cron jobs). This app will let R text message you about whatever you want. In this case it will text you when the timesheets are saved. More importantly, if there are errors it will text you the error it got so you can problem-solve. Right now the only other way to reproduce the error would be to run the script in R. I highly recommend this as it is very easy to use and useful for other R projects where you want to be kept up to date for long-running R jobs. Plus it's $5 (less than a burrito) and lasts forever. If you decide to, install the app on your cellphone and get the ID.
-3. Put these tokens into an .Renviron file. This will set your keys as environment variables when R loads. To do this:
-Make a text file called .Renviron on your rstudio_home folder if it does not already exist. The path should be Y:\rstudio_home\<your username>\.Renviron
-4. Write the following lines: TOGGL_TOKEN="<your toggl token>" PUSHOVER_KEY="<your pushover key>"
-5. Save and exit. Optionally you can set the permissions on this file such that only you can read it, if you're into that sort of thing. Just go to the file properties >> Security >> Advanced >> Disable Inheritance and add yourself in the Permission entries.
-6. Grab a beer and change over your toggl project codes to a consistent format that NAVtrackr can read. This is going to follow the format example cases:
+3. Put these tokens into an `.Renviron` file. This will set your keys as environment variables when R loads. Doing this is a little tricky because the `.Renviron` file lives on your home directory on NFS so you can only access it through Rstudio or SSH.
+  a-1. To write this file using Rstudio, start a new R session no associated with any project (it should say "Project: (None)") on the top right hand side. Then use the file explorer to see if there is a file called `.Renviron`. If so then open that up and edit it. Otherwise create a new R script and save it with the file name `.Renviron`.
+  a-2. You can also do this with an SSH client using the commands `cd ~; vim .Renviron;`
+  b. Write the following lines into `.Renviron`
+```
+TOGGL_TOKEN="<your toggl token>" 
+PUSHOVER_KEY="<your pushover key>"
+```
+  c. Save and exit. 
+  d. (Optional) you can set the permissions on this file such that only you can read it, if you're into that sort of thing. Just SSH in and run the `chmod` command of your choice (probably `chmod 711 .Renviron`).
+6. Grab a beer and change over your toggl project codes to a consistent format that `NAVtrackr` can read. This is going to follow the format example cases:
 
 ```
 [some text] [billcode]:[task]
