@@ -84,4 +84,4 @@ Now you are ready to run the scripts!
         the field does not match one of the allowable values.&nbsp; You can see the allowable values by pressing the Prompt button or 
         hyperlink.<a class=
 
-When this happens to me I usually just go into PeopleSoft and manually try out any new codes in a new timesheet to see if they exist. 
+When this happens to me I usually just go into InsideNCI and manually try out any new codes in a new timesheet to see if they exist. 
