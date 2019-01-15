@@ -1,7 +1,16 @@
 # NAVtrackr
-A tool to move time entries from Toggl to PeopleSoft for Navigant Consulting
+A tool to move time entries from Toggl to PeopleSoft for Navigant Consulting.
 
 # Getting started with NAVtrackr
+
+Required:
+- usage of Toggl for time keeping (https://toggl.com/toggl-desktop/)
+- access to the Navigant RStudio cluster
+- enough time to change over your time codes to the format needed for NAVtrackr
+
+Nice to have:
+- a little bit of coding experience
+- Pushover installed on your phone (https://pushover.net/)
 
 1. Get your toggl token at the bottom of this page (https://toggl.com/app/profile)
 2. Decide if you want to use NotifyR (helpful for cron jobs). This app will let R text message you about whatever you want. In this case it will text you when the timesheets are saved. More importantly, if there are errors it will text you the error it got so you can problem-solve. Right now the only other way to reproduce the error would be to run the script in R. I highly recommend this as it is very easy to use and useful for other R projects where you want to be kept up to date for long-running R jobs. Plus it's $5 (less than a burrito) and lasts forever. If you decide to, install the app on your cellphone and get the ID.
@@ -66,3 +75,13 @@ Now you are ready to run the scripts!
   - This will automatically create a timesheet for the previous Saturday, but if you want to make it for the upcoming saturday, you can run this command instead: `report_create(period_end_date = get_Sat(prev = F))` 
 7. If your toggl projects are in order this will result in "Timesheet Saved"
 8. Log in to InsideNCI and take a look at your saved timesheet.
+
+# Troubleshooting
+`NAVtrackr` has pretty good error handling, but the one area that has issues is when you enter a time code that *can* be parsed but is not valid ([see issue 3](https://github.com/sdanielzafar/NAVtrackr/issues/3)). This results in the following error:
+
+      Error in ts_fill_save(., entries, notify) :
+        Timesheet error: Invalid value -- press the prompt button or hyperlink for a list of valid values (15,11)The value entered in
+        the field does not match one of the allowable values.&nbsp; You can see the allowable values by pressing the Prompt button or 
+        hyperlink.<a class=
+
+When this happens to me I usually just go into PeopleSoft and manually try out any new codes in a new timesheet to see if they exist. 
