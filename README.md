@@ -71,7 +71,7 @@ Now you are ready to run the scripts!
 
 5. Load up R (new session, so .Renviron loads) and type in `library(NAVtrackr)`
 6. Run the code: `report_create()`
-  - this will pop up a dialog box where you can enter your password to log onto InsideNCI
+  - this will get your password from your NAVsecret vault OR pop up a dialog box where you can enter your password to log onto InsideNCI
   - This will automatically create a timesheet for the previous Saturday, but if you want to make it for the upcoming saturday, you can run this command instead: `report_create(period_end_date = get_Sat(prev = F))` 
 7. If your toggl projects are in order this will result in "Timesheet Saved"
 8. Log in to InsideNCI and take a look at your saved timesheet.
