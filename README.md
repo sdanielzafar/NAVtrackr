@@ -24,8 +24,14 @@ Nice to have:
           PUSHOVER_KEY="<your pushover key>"
 
       c. Save and exit. 
-  
-      d. (Optional) you can set the permissions on this file such that only you can read it, if you're into that sort of thing. Just SSH in and run the `chmod` command of your choice (probably `chmod 711 .Renviron`). If you want to be 100% NAVhip, use the new `NAVsecret` to do this :) 
+
+      d. (Optional) create a NAVsecret vault so you don't need to enter your password to run `NAVtrackr`:
+      
+          library(NAVsecret)
+          create_nav_vault("your.email@navigant.com")
+        
+      e. (Optional) you can set the permissions on this file such that only you can read it, if you're into that sort of thing. Just SSH in and run the `chmod` command of your choice (probably `chmod 711 .Renviron`). If you want to be 100% NAVhip, use the new `NAVsecret` to do this :) 
+
   
 4. Grab a beer and change over your toggl project codes to a consistent format that `NAVtrackr` can read. This is going to follow the format example cases:
 
